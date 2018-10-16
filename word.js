@@ -1,11 +1,8 @@
 var Letter = require("./letter");
 
-// let word = "alex ichikawa";
-// let guess = "b";
-
 class Word {
-    constructor( word, guess) {
-        this.letter = new Letter(word, guess);
+    constructor( word) {
+        this.letter = new Letter(word);
     }
 
     doThing() {
@@ -14,16 +11,16 @@ class Word {
         
     }
 
-    doOtherThing() {
-        this.letter.checkGuess();
-        console.log(this.letter.correct);
-        console.log(this.letter.tries);
+    doOtherThing(guess) {
+        this.letter.usedBefore = false;
+        this.letter.checkGuess(guess);
+        console.log(this.letter.underScore.join(' '));
+        console.log(`Lives left: ${this.letter.tries}`);
+        if (this.letter.usedBefore == true) {
+            console.log("You've guessed this letter before");
+        }
     }
     
 }
-
-// var newWord = new Word(word, guess);
-// newWord.doThing();
-// newWord.doOtherThing();
 
 module.exports = Word;

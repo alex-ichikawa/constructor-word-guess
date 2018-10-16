@@ -2,12 +2,6 @@ var inquirer = require("inquirer");
 var Word = require("./word");
 
 const words = ['ayrton senna', 'ferrari', 'sebastian vettel', 'mclaren', 'williams', 'honda', 'monaco', 'red bull', 'adrian newey', 'fernando alonso', 'kamui kobayashi', 'jenson button', 'kimi raikkonen', 'eau rouge'];
-// var guess = process.argv[2];
-
-// let word1 = "alex ichikawa";
-// let guess1 = "a";
-
-// let newWord = new word(word1, guess1);
 
 function startGame() {
     randomWord = words[Math.floor(Math.random() * words.length)];
@@ -18,13 +12,13 @@ function reset() {
     word.letter.tries = 6
     word.letter.underScore = [];
     word.letter.userGuesses = [];
-    word.letter.guess = '';
     word.letter.spaceCounter = 0;
-    word.letter.hasRan = false;
     startGame();
 }
 
 function chooseFisrtLetter() {
+    word = new Word(randomWord);
+    word.doThing();
     inquirer.prompt([
         {
             type: "input",
@@ -40,9 +34,8 @@ function chooseFisrtLetter() {
             }
         },
     ]).then(function (game) {
-        word = new Word(randomWord, game.guess);
-        word.doThing();
-        word.doOtherThing();
+
+        word.doOtherThing(game.guess);
         chooseMoreLetters();
 
     })
@@ -64,9 +57,8 @@ function chooseMoreLetters() {
             }
         },
     ]).then(function (game) {
-        word.letter.guess = game.guess;
-        word.doThing();
-        word.doOtherThing();
+        let guess = game.guess.toLowerCase();
+        word.doOtherThing(guess);
         if (word.letter.underScore.indexOf('_') == -1) {
             console.log("you win");
             reset();
